@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Railway ACO Planner</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="theme.css"></head>
+<body>
+<header><a class="brand" href="#"><span class="mark">R</span><span>RAIL SYSTEMS LAB<small>COMPUTATIONAL INTELLIGENCE MICRO PROJECT</small></span></a><span class="live"><i></i> SIMULATION READY</span></header>
+<main>
+ <section class="hero"><div class="eyebrow">ANT COLONY OPTIMIZATION · RAIL OPERATIONS</div><h1>Plan routes.<br><em>Assign resources.</em></h1><p>Optimize train paths across a rail network, then allocate non-conflicting platforms and qualified crews to each scheduled service.</p><div class="tag">ACO PROJECT · ROUTE + PLATFORM + CREW ASSIGNMENT</div></section>
+ <section class="layout">
+  <aside class="card setup"><div class="title"><span>01</span><h2>Simulation controls</h2></div>
+   <label>Ants per iteration<input id="ants" type="number" min="8" max="100" value="32"></label><label>Iterations<input id="iterations" type="number" min="20" max="300" value="100"></label><label>Random seed<input id="seed" type="number" min="1" value="42"></label>
+   <div class="two"><label>α · pheromone<input id="alpha" type="number" min="0.1" max="5" step="0.1" value="1"></label><label>β · route heuristic<input id="beta" type="number" min="0.1" max="8" step="0.1" value="3"></label></div>
+   <label>ρ · pheromone evaporation<input id="rho" type="number" min="0.05" max="0.95" step="0.05" value="0.4"></label>
+   <div class="divider"></div><div class="title small-title"><span>02</span><h2>Track availability</h2></div><label>Track segment<select id="track-select"></select></label><button id="toggle-track" class="secondary">Close selected track</button>
+   <div class="divider"></div><div class="title small-title"><span>03</span><h2>Scenario editor</h2></div>
+   <details class="editor"><summary>Edit train schedule</summary>
+    <div class="two"><label>Origin<select id="train-from"></select></label><label>Destination<select id="train-to"></select></label></div>
+    <div class="two"><label>Service<select id="train-type"><option>Express</option><option>Local</option><option>Freight</option></select></label><label>Departure<input id="train-depart" type="time" value="09:00"></label></div>
+    <label>Platform dwell (minutes)<input id="train-dwell" type="number" min="5" max="120" value="20"></label><button id="add-train" class="secondary">＋ Add train</button>
+    <div id="train-manifest" class="manifest"></div>
+   </details>
+   <details class="editor"><summary>Configure platforms and crews</summary>
+    <label>Station<select id="platform-station"></select></label><div class="two"><label>Platforms<input id="platform-count" type="number" min="1" max="6" value="2"></label><button id="apply-platforms" class="secondary compact">Apply</button></div>
+    <div id="crew-roster" class="crew-roster"></div>
+   </details>
+   <div class="two scenario-actions"><button id="save-scenario" class="secondary">Save setup</button><button id="load-scenario" class="secondary">Load saved</button></div><button id="reset-scenario" class="secondary">Restore defaults</button>
+   <button id="run" class="primary">▶ &nbsp;Optimize railway plan</button><button id="export" class="export" disabled>↓ Export assignment CSV</button><p class="hint">Edit the timetable, platforms, crew roster, or track state and rerun to compare plans.</p>
+  </aside>
+  <section class="maincol">
+   <div class="card network-card"><div class="title"><span>04</span><h2>Rail network</h2><span class="meta" id="network-meta">5 STATIONS · 9 TRACKS</span></div><canvas id="network" aria-label="Rail network with optimized train routes"></canvas><div class="legend"><span><i class="node-dot hub"></i>Station</span><span><i class="route-line"></i>ACO route</span><span><i class="closed-line"></i>Closed track</span></div></div>
+   <div class="metrics"><article><small>ACO PLAN COST</small><strong id="aco-cost">—</strong><span id="aco-runtime">Run optimizer</span></article><article><small>BASELINE PLAN COST</small><strong id="base-cost">—</strong><span>Shortest path + first available</span></article><article><small>PLAN IMPROVEMENT</small><strong id="gain">—</strong><span>Lower cost is better</span></article></div>
+   <div class="card convergence"><div class="title"><span>05</span><h2>ACO convergence</h2><span class="meta">BEST PLAN COST BY ITERATION</span></div><canvas id="chart" aria-label="ACO convergence chart"></canvas></div>
+   <div class="card plan"><div class="title"><span>06</span><h2>Train assignment plan</h2><span id="status" class="meta">AWAITING OPTIMIZATION</span></div><div id="summary" class="summary">Run the optimizer to view routes, platforms, and crew assignments.</div><div class="table-wrap" id="table-wrap"></div></div>
+  </section>
+ </section>
+ <section class="method"><div><div class="eyebrow">HOW THE ACO PART WORKS</div><h2>Ants construct complete train plans</h2></div><p>Each ant selects a route for every train using track pheromone and a travel-time heuristic. It then assigns an available destination platform and a crew team qualified for that service. Short, feasible plans receive more pheromone, making their choices more likely in later iterations.</p><p class="note">This is a coursework simulator with synthetic train schedules and illustrative travel times. It does not represent a live railway or safety-critical dispatch system.</p></section>
+ <footer>STANDALONE ACO MICRO PROJECT <span>·</span> Synthetic demonstration data</footer>
+</main><script src="app.js"></script></body></html>
